@@ -20,9 +20,9 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 provider "google" {
   credentials = file(var.credentials_file)
-  project = var.project_id
-  region  = "europe-west1"
-  zone = "europe-west1-c"
+  project     = var.project_id
+  region      = "europe-west1"
+  zone        = "europe-west1-c"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

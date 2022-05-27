@@ -1,0 +1,15 @@
+# jetbrainns
+.idea
+
+# ---------------------------------------------------------------------------------------------------------------------
+# terraform
+# These files may contain sensitive private data such credentials, secrets
+# ---------------------------------------------------------------------------------------------------------------------
+.terraform
+.terraform.tfstate.lock.info
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+
+# GCP credentials
+credentials.json

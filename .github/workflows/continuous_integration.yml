@@ -1,0 +1,44 @@
+name: Continuous integration (CI)
+
+on:
+  # This command allows us to run the Action automatically from the Actions tab.
+  workflow_dispatch:
+
+  push:
+   branches:
+     - main
+
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Uncomment the following lines if you want to run scheduled Continuous integration (CI) pipeline
+#  schedule:
+    # every hours
+    #- cron: "0 */1 * * *"
+
+# The sequence of runs in this workflow:
+jobs:
+  check-infrastructure:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      # Checks repo under $GITHUB_WORKSHOP, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Format recursively all terraform files
+      - name: Initialize terraform
+        working-directory: ./infrastructure
+        run: terraform init
+
+      # Format recursively all terraform files
+      - name: Format all terraform files
+        working-directory: ./infrastructure
+        run: terraform fmt --check .
+
+      # Validate terraform configuration before terraform plan & apply
+      - name: Validate terraform configuration
+        working-directory: ./infrastructure
+        run: terraform validate

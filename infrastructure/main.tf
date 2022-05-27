@@ -57,7 +57,7 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# RESOURCE BLOCK - vm_instance
+# RESOURCE BLOCK - storage bucket
 # Use resource blocks to define components of your infrastructure.
 # A resource might be a physical component such as a server
 # European multi-region storage bucket

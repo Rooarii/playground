@@ -31,9 +31,9 @@ jobs:
       # Format recursively all terraform files
       - name: Format all terraform files
         working-directory: ./infrastructure
-        run-command: terraform fmt --check .
+        run: terraform fmt --check .
 
       # Validate terraform configuration before terraform plan & apply
       - name: Validate terraform configuration
         working-directory: ./infrastructure
-        run-command: terraform validate
+        run: terraform validate

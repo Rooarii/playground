@@ -1,0 +1,10 @@
+django>=4.0.5
+djangorestframework
+
+# Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS).
+django-cors-headers
+
+# YAML parser and emitter for Python
+pyyaml
+
+requests

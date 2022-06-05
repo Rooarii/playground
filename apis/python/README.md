@@ -34,4 +34,9 @@
 
   ```shell
       pip install --upgrade pip
-    ```
+  ```
+- Create Django application:
+
+  ```shell
+    django-admin startproject django_app
+  ```

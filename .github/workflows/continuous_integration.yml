@@ -42,3 +42,53 @@ jobs:
       - name: Validate terraform configuration
         working-directory: ./infrastructure
         run: terraform validate
+
+  setup-python-environment:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./apis/python
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      # Checks repo under $GITHUB_WORKSHOP, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Create python virtual environment
+        run: python3.10 -m venv .venv
+
+      - name: Source python virtual environment
+        run: source .venv/bin/activate
+
+      - name: Install required dependencies
+        run: pip install -r requirements.txt
+
+      - name: Upgrade pip version
+        run: pip install --upgrade pip
+
+  build-django-app:
+
+    # previous required job(s)
+    needs: setup-python-environment
+
+    runs-on: ubuntu-latest
+      defaults:
+        run:
+          working-directory: ./apis/python/django_app/django_app
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      # Checks repo under $GITHUB_WORKSHOP, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Migrate Database
+        run: python manage.py migrate
+
+      - name: Check django_app
+        run: python manage.py check
+
+      - name: Test django_app
+        run: python manage.py test

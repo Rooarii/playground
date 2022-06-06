@@ -120,4 +120,4 @@ jobs:
 
       - name: Test django_app
         working-directory: apis/python/django_app
-        run: python manage.py test
+        run: python manage.py test --failfast -v 2

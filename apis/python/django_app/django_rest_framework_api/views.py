@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from django.http import JsonResponse
 
-# Create your views here.
+
+def api_home(request, *args, **kwargs):
+    return JsonResponse(
+        {
+            "endpoint": "http://127.0.0.1:8000/api/",
+            "message": "Welcome to Django Rest Framework!"
+        }
+    )
+

@@ -44,14 +44,14 @@ jobs:
         working-directory: ./infrastructure
         run: terraform validate
 
-  setup-python-environment:
+  build-django-application:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     defaults:
       run:
         shell: bash
-        working-directory: apis/python
+        working-directory: apis/python/django_app
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -61,8 +61,6 @@ jobs:
       with:
         python-version: '3.10' # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-
-    - uses: syphar/restore-virtualenv@v1
 
     - name: Create python virtual environment
       run: python -m venv .venv
@@ -76,48 +74,15 @@ jobs:
     - name: Upgrade pip version
       run: pip install --upgrade pip
 
-  build-django-application:
+    - name: Migrate Database
+      working-directory: apis/python/django_app
+      run: python manage.py migrate
 
-    # previous required job(s)
-    needs: setup-python-environment
+    - name: Check django_app
+      working-directory: apis/python/django_app
+      run: python manage.py check
 
-    runs-on: ubuntu-latest
+    - name: Test django_app
+      working-directory: apis/python/django_app
+      run: python manage.py test --failfast -v 2
 
-    defaults:
-      run:
-        shell: bash
-        working-directory: apis/python/
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-
-      # Checks repo under $GITHUB_WORKSHOP, so your job can access it
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v3
-        with:
-          python-version: '3.10' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
-
-      - uses: syphar/restore-virtualenv@v1
-        id: cache-virtualenv
-
-      - uses: syphar/restore-pip-download-cache@v1
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-
-        # the package installation will only be executed when the
-        # requirements-files have changed.
-      - run: pip install -r requirements.txt
-        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
-
-      - name: Migrate Database
-        working-directory: apis/python/django_app
-        run: python manage.py migrate
-
-      - name: Check django_app
-        working-directory: apis/python/django_app
-        run: python manage.py check
-
-      - name: Test django_app
-        working-directory: apis/python/django_app
-        run: python manage.py test --failfast -v 2

@@ -119,13 +119,10 @@ jobs:
       run: pip install --upgrade pip
 
     - name: Migrate Database
-      working-directory: apis/python/django_app
       run: python manage.py migrate
 
     - name: Check django_app
-      working-directory: apis/python/django_app
       run: python manage.py check
 
     - name: Test django_app
-      working-directory: apis/python/django_app
       run: python manage.py test --failfast -v 2

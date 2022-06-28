@@ -95,7 +95,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: front/personnal_website
+        working-directory: front
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:

@@ -249,6 +249,7 @@ resource "google_project_iam_binding" "service_permissions" {
   role    = "roles/${each.key}"
   members = [local.cloudbuild_serviceaccount, local.django_serviceaccount]
 
+  project = var.project
 }
 
 resource "google_service_account_iam_binding" "cloudbuild_sa" {

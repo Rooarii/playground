@@ -158,3 +158,30 @@ locals {
   cloudbuild_serviceaccount = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
   django_serviceaccount     = "serviceAccount:${google_service_account.django.email}"
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# POPULATE SECRETS
+# ---------------------------------------------------------------------------------------------------------------------
+resource "random_password" "superuser_password" {
+  length  = 32
+  special = false
+}
+
+resource "google_secret_manager_secret" "superuser_password" {
+  secret_id = "superuser_password"
+  replication {
+    automatic = true
+  }
+  depends_on = [google_project_service.secretmanager]
+}
+
+resource "google_secret_manager_secret_version" "superuser_password" {
+  secret      = google_secret_manager_secret.superuser_password.id
+  secret_data = random_password.superuser_password.result
+}
+
+resource "google_secret_manager_secret_iam_binding" "superuser_password" {
+  secret_id = google_secret_manager_secret.superuser_password.id
+  role      = "roles/secretmanager.secretAccessor"
+  members   = [local.cloudbuild_serviceaccount]
+}

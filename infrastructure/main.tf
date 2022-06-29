@@ -58,3 +58,12 @@ resource "google_project_service" "secretmanager" {
   service            = "secretmanager.googleapis.com"
   disable_on_destroy = false
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# SERVICE ACCOUNT - GCP
+# Allows management of a Google Cloud service account
+# Applications use service accounts to make authorized API calls
+# ---------------------------------------------------------------------------------------------------------------------
+resource "google_service_account" "django" {
+  account_id = "django"
+}

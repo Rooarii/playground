@@ -96,3 +96,30 @@ resource "google_sql_user" "django" {
   instance = google_sql_database_instance.instance.name
   password = random_password.database_password.result
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CREATE SECRETS
+# ---------------------------------------------------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------------------------------------------------
+# STORAGE BUCKET - GCP
+# GCP cloud storage allows the creation of storage bucket (container like) in which you can store data.
+# --------------------------------------------------------------------------------------------------------------------
+resource "google_storage_bucket" "media" {
+  name     = "${var.project}-images"
+  location = "EU"
+}
+
+resource "random_password" "django_secret_key" {
+  special = false
+  length  = 50
+}
+
+resource "google_secret_manager_secret" "django_settings" {
+  secret_id = "django_settings"
+
+  replication {
+    automatic = true
+  }
+  depends_on = [google_project_service.secretmanager]
+}

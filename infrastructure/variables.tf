@@ -1,13 +1,20 @@
 # ---------------------------------------------------------------------------------------------------------------------
-# REQUIRED PARAMETERS
-# These parameters must be supplied.
+# SET UP REQUIRED VARIABLES
 # ---------------------------------------------------------------------------------------------------------------------
-variable "project_id" {
-  description = "The id of the GCP projetc"
+
+variable "project" {
   type        = string
+  description = "The ID of the GCP project"
 }
 
-variable "credentials_file" {
-  description = "This is the path to the credentials file used to authenticate to GCP"
+variable "region" {
   type        = string
+  default     = "eu-central1"
+  description = "Google Cloud Region"
+}
+
+variable "service" {
+  type        = string
+  default     = "personnal_website"
+  description = "The name of the service"
 }

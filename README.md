@@ -81,3 +81,16 @@ After you create your service account, download your service account key.
 
 You can read more about service account keys in [Google's documentation](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
 
+## Git tips
+
+To keep git history clear, this repo branch integration uses rebase strategy.
+I have misconfigured git therefore, firsts commits are not linear.
+
+Recommendations: Uncheck `Allow merge commits` checkbox
+
+## Local branches
+To avoid local branches accumulation use following command to delete all branches that has been integrated to main.
+
+```shell
+git fetch -p && for branch in $(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}'); do git branch -D $branch; done
+```

@@ -11,7 +11,7 @@ And also build a new website for me, two targets one shot.
 
 ## Set Up
 
-- Create a virtual environment:
+1. Create a virtual environment:
 
     ```shell
     $ python<latest_version> -m venv .venv
@@ -19,32 +19,74 @@ And also build a new website for me, two targets one shot.
 
     > **_NOTE:_** In this case i'll use python 3.10
 
-- Activate the virtual environment
+2. Activate the virtual environment
 
     ```shell
     $ source .venv/bin/activate
     ```
-
-  To check that your virtual environment has been activated:
+    To check that your virtual environment has been activated:
 
     ```shell
     $ which pip
     working_directory/.venv/bin/pip
     ```
 
-- Install required libraries/dependencies:
+3. Install required libraries/dependencies:
 
     ```shell
-     pip install -r requirements.txt
+    pip install -r requirements.txt
     ```
   
-  You might have to upgrade your pip version:
+    You might have to upgrade your pip version:
 
-  ```shell
-      pip install --upgrade pip
-  ```
-- Create Django application:
+    ```shell
+    pip install --upgrade pip
+    ```
+4. Create Django application:
 
-  ```shell
+    ```shell
     django-admin startproject personnal_website
-  ```
+    ```
+  
+## Local Development
+
+1. Install PostgreSQL with the official documentation: https://www.postgresql.org/download/linux/ubuntu/
+
+
+2. Log in to PostgreSQL
+
+    ```shell
+    sudo -i -u postgres psql
+    ```
+   
+3. Create dev User
+
+    ```shell
+    create user dev;create database local_db;alter role dev with password 'davethedev';grant all privileges on database local_db to dev;alter database local_db owner to dev;
+    ```
+    > **_NOTE:_** The db name, user, password & authorizations has to corresponds with settings.py
+
+4. Make migrations
+
+    ```shell
+    python manage.py makemigrations
+    ```
+
+5. Migrate with `local` database profile
+
+    ```shell
+    python manage.py migrate --database=local
+    ```
+6. Create a superuser (admin)
+
+    ```shell
+    python manage.py createsuperuser --email <mail>@gmail.com --username <username>
+    ```
+7. Run application
+
+    ```shell
+    python manage.py runserver
+    ```
+Let's dev Dave 
+
+![alt](https://slackmojis.com/emojis/7421-typingcat/download)

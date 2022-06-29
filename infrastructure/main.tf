@@ -237,3 +237,23 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# GRANT ACCESS TO DATABASE
+# ---------------------------------------------------------------------------------------------------------------------
+resource "google_project_iam_binding" "service_permissions" {
+  for_each = toset([
+    "run.admin", "cloudsql.client"
+  ])
+
+  role    = "roles/${each.key}"
+  members = [local.cloudbuild_serviceaccount, local.django_serviceaccount]
+
+}
+
+resource "google_service_account_iam_binding" "cloudbuild_sa" {
+  service_account_id = google_service_account.django.name
+  role               = "roles/iam.serviceAccountUser"
+
+  members = [local.cloudbuild_serviceaccount]
+}

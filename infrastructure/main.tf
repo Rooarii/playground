@@ -123,3 +123,19 @@ resource "google_secret_manager_secret" "django_settings" {
   }
   depends_on = [google_project_service.secretmanager]
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CONFIGURE DJANGO SETTINGS
+# We pass to an template file all variables needed to configure django settings.
+# ---------------------------------------------------------------------------------------------------------------------
+resource "google_secret_manager_secret_version" "django_settings" {
+  secret = google_secret_manager_secret.django_settings.id
+
+  secret_data = templatefile("../front/etc/env.tpl", {
+    bucket     = google_storage_bucket.media.name
+    secret_key = random_password.django_secret_key.result
+    user       = google_sql_user.django
+    instance   = google_sql_database_instance.instance
+    database   = google_sql_database.database
+  })
+}

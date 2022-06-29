@@ -19,8 +19,6 @@ terraform {
 # You can define multiple provider blocks in a Terraform configuration to manage resources from different providers.
 # ---------------------------------------------------------------------------------------------------------------------
 provider "google" {
-  credentials = file(var.credentials_file)
-  project     = var.project_id
-  region      = "europe-west1"
-  zone        = "europe-west1-c"
+  project     = var.project
+  region      = var.region
 }

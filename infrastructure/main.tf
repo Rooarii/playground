@@ -185,3 +185,34 @@ resource "google_secret_manager_secret_iam_binding" "superuser_password" {
   role      = "roles/secretmanager.secretAccessor"
   members   = [local.cloudbuild_serviceaccount]
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# POPULATE SECRETS
+# ---------------------------------------------------------------------------------------------------------------------
+resource "google_cloud_run_service" "service" {
+  name                       = var.service
+  location                   = var.region
+  autogenerate_revision_name = true
+
+  template {
+    spec {
+      service_account_name = google_service_account.django.email
+      containers {
+        image = "gcr.io/${var.project}/${var.service}"
+      }
+    }
+
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/maxScale"      = "100"
+        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.instance.connection_name
+        "run.googleapis.com/client-name"        = "terraform"
+      }
+    }
+  }
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+}

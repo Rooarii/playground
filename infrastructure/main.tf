@@ -23,6 +23,10 @@ provider "google" {
   region      = var.region
 }
 
+data "google_project" "project" {
+  project_id = var.project
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # SERVICE APIs - GCP
 # Service APIs are APIs that allows to use ceratins resources or service of a provider.
@@ -138,4 +142,19 @@ resource "google_secret_manager_secret_version" "django_settings" {
     instance   = google_sql_database_instance.instance
     database   = google_sql_database.database
   })
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# AUTHORIZE SERVICE ACCOUNT
+# We grant service account role secretAccessor.
+# ---------------------------------------------------------------------------------------------------------------------
+resource "google_secret_manager_secret_iam_binding" "django_settings" {
+  secret_id = google_secret_manager_secret.django_settings.id
+  role      = "roles/secretmanager.secretAccessor"
+  members   = [local.cloudbuild_serviceaccount, local.django_serviceaccount]
+}
+
+locals {
+  cloudbuild_serviceaccount = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
+  django_serviceaccount     = "serviceAccount:${google_service_account.django.email}"
 }

@@ -81,9 +81,9 @@ resource "random_password" "database_password" {
 }
 
 resource "google_sql_database_instance" "instance" {
-  name             = "personnal_website"
-  database_version = "POSTGRES_14"
-  region           = "eu-central1"
+  name             = var.service
+  database_version = var.database_version
+  region           = var.region
   settings {
     tier = "db-f1-micro"
   }

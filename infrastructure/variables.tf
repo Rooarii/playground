@@ -9,12 +9,18 @@ variable "project" {
 
 variable "region" {
   type        = string
-  default     = "eu-central1"
+  default     = "europe-west9"
   description = "Google Cloud Region"
 }
 
 variable "service" {
   type        = string
-  default     = "personnal_website"
+  default     = "postgres"
   description = "The name of the service"
+}
+
+variable "database_version" {
+  type        = string
+  default     = "POSTGRES_14"
+  description = "The version of the database"
 }

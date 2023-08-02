@@ -1,13 +1,26 @@
 # ---------------------------------------------------------------------------------------------------------------------
-# REQUIRED PARAMETERS
-# These parameters must be supplied.
+# SET UP REQUIRED VARIABLES
 # ---------------------------------------------------------------------------------------------------------------------
-variable "project_id" {
-  description = "The id of the GCP projetc"
+
+variable "project" {
   type        = string
+  description = "The ID of the GCP project"
 }
 
-variable "credentials_file" {
-  description = "This is the path to the credentials file used to authenticate to GCP"
+variable "region" {
   type        = string
+  default     = "europe-west9"
+  description = "Google Cloud Region"
+}
+
+variable "service" {
+  type        = string
+  default     = "postgres"
+  description = "The name of the service"
+}
+
+variable "database_version" {
+  type        = string
+  default     = "POSTGRES_14"
+  description = "The version of the database"
 }

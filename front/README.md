@@ -9,7 +9,37 @@ Use devops approach with github actions because it's free and open source üôèü
 
 And also build a new website for me, two targets one shot.
 
-## Set Up
+## Google Cloud Platform (GCP)
+1. Create a GCP project with billing enabled
+
+   ```shell
+   PROJECT_ID=byebyemoney-1236393
+   gcloud config set project $PROJECT_ID
+   ```
+   
+2. Configure default credentials (allows Terraform to apply changes):
+
+   ```shell
+   gcloud auth application-default login
+   ```
+
+3. Enable base services:
+
+   ```shell
+   gcloud services enable \
+     cloudbuild.googleapis.com \
+     run.googleapis.com \
+     cloudresourcemanager.googleapis.com
+   ```
+
+4. Build image using gcloud cli
+
+   ```shell
+   gcloud builds submit
+   ```
+
+## Local
+### Set Up
 
 1. Create a virtual environment:
 
@@ -48,7 +78,7 @@ And also build a new website for me, two targets one shot.
     django-admin startproject personnal_website
     ```
   
-## Local Development
+### Development
 
 1. Install PostgreSQL with the official documentation: https://www.postgresql.org/download/linux/ubuntu/
 
